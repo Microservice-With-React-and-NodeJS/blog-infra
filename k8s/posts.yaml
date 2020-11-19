@@ -1,0 +1,22 @@
+# write all the configurations here
+
+#tell kubernetes about the collectio of objects from where we want to draw -> look at the default v1 kubernetes list of objects we can create
+apiVersion: v1
+# telling kubernetes that we want to create an object of type: pod(pod will wrape up a container)
+kind: Pod
+# includes some options for the object
+metadata:
+  # telling kubernetes that we want the pod named as posts
+  name: posts
+# list of configuration options for the pod will be created
+spec:
+  # only  configuration is containers. its an array. it starts with - which means we want to add an array entity here
+  containers:
+    # telling kubernetes that we want one container inside the pod named posts
+    - name: posts
+      # telling kubernetes that we want to build a container using this image
+      # if we dont add the version number / add latest at the end of the image tag, docker will call the latest version as default from dockerhub . Giving a version number means, we are asking kubernetes to  look for that version inside local computer ,donot reach out to docker hub
+      image: syeda/posts:0.0.1
+# next tell kubernetes to create an object , in terminal:
+# move inside k8s file, run kubectl apply -f posts.yaml -> pod/posts will be created immideately
+# if error: either kubernetes is not running or a typo in this file
