@@ -24,4 +24,6 @@ spec:
     spec:
       containers:
         - name: posts
-          image: syeda/posts:0.0.1
+          # adding no version/ adding lates makes sure that it gets the latest version
+          image: syedaismatfarjana09/posts:latest
+  #  only saving kubernetes file does nothing actually        we have to apply this config file to the cluster
