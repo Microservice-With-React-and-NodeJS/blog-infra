@@ -1,0 +1,44 @@
+# wirte code for clusterIP services
+
+# deployment for event bus
+# deployment is in bucktet apps/v1
+apiVersion: apps/v1
+
+# specify the kind of object we want to create
+kind: Deployment
+
+metadata:
+  name: moderation-depl
+# to specify how this deployment should behave
+spec:
+  #number of pods we want to create running some perticuler image
+  replicas: 1
+  # selector takes a look at the all the different pod that has been ever created  with a label of app moderation
+  selector:
+    matchLabels:
+      app: moderation
+  # configuration forthe pod this deployment is going to create. here we aretelling to deployment that , we want this pod to have label of app moderation
+  template:
+    metadata:
+      labels:
+        app: moderation
+    spec:
+      containers:
+        - name: moderation
+          # adding no version/ adding lates makes sure that it gets the latest version
+          image: syedaismatfarjana09/moderation:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderation-srv
+spec:
+  selector:
+    # tellthe service to direct any event with the label of app: moderation
+    app: moderation
+  ports:
+    - name: moderation
+      protocol: TCP
+      port: 4003
+      targetPort: 4003
