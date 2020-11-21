@@ -3,12 +3,12 @@
 # deployment is in bucktet apps/v1
 apiVersion: apps/v1
 
-# specify the kinf of object we want to create
+# specify the kind of object we want to create
 kind: Deployment
 
 metadata:
   name: posts-depl
-# to specify how this deployment shoul dbehave
+# to specify how this deployment should behave
 spec:
   #number of pods we want to create running some perticuler image
   replicas: 1
@@ -27,3 +27,5 @@ spec:
           # adding no version/ adding lates makes sure that it gets the latest version
           image: syedaismatfarjana09/posts:latest
   #  only saving kubernetes file does nothing actually        we have to apply this config file to the cluster
+# configuration for cluster ip service
+

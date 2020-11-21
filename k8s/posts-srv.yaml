@@ -1,0 +1,23 @@
+# wirte code for services
+
+# services are inthe bucket v1
+apiVersion: v1
+#Specifying the kind of object we are creating
+kind: Service
+
+metadata:
+  # name of the service
+  name: posts-srv
+spec:
+  # setting up the type of service, nodeport : exposes the set of pods to outside world
+  type: NodePort
+  # we are telling selector to find out all the pods with the label of app: posts, then expose it to world
+  # slector and label are very similer to class in html in nature
+  selector:
+    app: posts
+  # the same port used in our sourcecode index.js file to run the service
+  ports:
+    - name: posts
+      protocol: TCP
+      port: 4000
+      targetPort: 4000
