@@ -1,0 +1,44 @@
+# wirte code for clusterIP services
+
+# deployment for event bus
+# deployment is in bucktet apps/v1
+apiVersion: apps/v1
+
+# specify the kind of object we want to create
+kind: Deployment
+
+metadata:
+  name: query-depl
+# to specify how this deployment should behave
+spec:
+  #number of pods we want to create running some perticuler image
+  replicas: 1
+  # selector takes a look at the all the different pod that has been ever created  with a label of app query
+  selector:
+    matchLabels:
+      app: query
+  # configuration forthe pod this deployment is going to create. here we aretelling to deployment that , we want this pod to have label of app query
+  template:
+    metadata:
+      labels:
+        app: query
+    spec:
+      containers:
+        - name: query
+          # adding no version/ adding lates makes sure that it gets the latest version
+          image: syedaismatfarjana09/query:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: query-srv
+spec:
+  selector:
+    # tellthe service to direct any event with the label of app: query
+    app: query
+  ports:
+    - name: query
+      protocol: TCP
+      port: 4002
+      targetPort: 4002
