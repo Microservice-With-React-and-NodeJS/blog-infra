@@ -1,26 +1,33 @@
 # wirte code for clusterIP services
 
-# services are inthe bucket v1
-apiVersion: v1
-#Specifying the kind of object we are creating
-kind: Service
+# deployment for event bus
+# deployment is in bucktet apps/v1
+apiVersion: apps/v1
+
+# specify the kind of object we want to create
+kind: Deployment
 
 metadata:
-  # name of the service
-  name: event-bus-srv
+  name: event-bus-depl
+# to specify how this deployment should behave
 spec:
-  # setting up the type of service, nodeport : exposes the set of pods to outside world
-  type: NodePort
-  # we are telling selector to find out all the pods with the label of app: event-bus, then expose it to world
-  # slector and label are very similer to class in html in nature
+  #number of pods we want to create running some perticuler image
+  replicas: 1
+  # selector takes a look at the all the different pod that has been ever created  with a label of app event-bus
   selector:
-    app: event-bus
-  # the same port used in our sourcecode index.js file to run the service
-  ports:
-    - name: event-bus
-      protocol: TCP
-      port: 4000
-      targetPort: 4000
+    matchLabels:
+      app: event-bus
+  # configuration forthe pod this deployment is going to create. here we aretelling to deployment that , we want this pod to have label of app event-bus
+  template:
+    metadata:
+      labels:
+        app: event-bus
+    spec:
+      containers:
+        - name: event-bus
+          # adding no version/ adding lates makes sure that it gets the latest version
+          image: syedaismatfarjana09/event-bus:latest
+
 ---
 apiVersion: v1
 kind: Service
@@ -30,8 +37,6 @@ spec:
   selector:
     # tellthe service to direct any event with the label of app: event-bus
     app: event-bus
-  # adding type of cluster service  is optional, cause if not included, kubernetes will default create one
-  type: ClusterIP
   ports:
     - name: event-bus
       protocol: TCP
